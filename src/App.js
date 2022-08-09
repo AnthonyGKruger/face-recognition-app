@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Particles from "react-particles-js";
+// import Particles from "react-particles-js";
 import Navigation from "./components/Navigation/Navigation";
 import Logo from "./components/Logo/Logo";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
