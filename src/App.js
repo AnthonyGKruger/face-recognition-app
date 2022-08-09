@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import Particles from "react-particles-js";
+import Particles from "react-particles-js";
 import Navigation from "./components/Navigation/Navigation";
 import Logo from "./components/Logo/Logo";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
@@ -9,17 +9,17 @@ import "./App.css";
 import SignIn from "./components/SignIn/SignIn";
 import Register from "./components/Register/Register";
 
-// const particlesOptions = {
-// 	particles: {
-// 		number: {
-// 			value: 30,
-// 			density: {
-// 				enable: true,
-// 				value_area: 800,
-// 			},
-// 		},
-// 	},
-// };
+const particlesOptions = {
+	particles: {
+		number: {
+			value: 30,
+			density: {
+				enable: true,
+				value_area: 800,
+			},
+		},
+	},
+};
 
 const App = () => {
 	const [input, setInput] = useState("");
@@ -129,7 +129,7 @@ const App = () => {
 
 	return (
 		<div className="App">
-			{/* <Particles className="particles" params={particlesOptions} /> */}
+			<Particles className="particles" params={particlesOptions} />
 			<Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
 			{route === "home" ? (
 				<div>
