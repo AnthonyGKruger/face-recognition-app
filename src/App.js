@@ -24,7 +24,7 @@ const particlesOptions = {
 const App = () => {
 	const [input, setInput] = useState("");
 	const [imageUrl, setImageUrl] = useState("");
-	const [box, setBox] = useState({});
+	const [boxes, setBoxes] = useState([]);
 	const [route, setRoute] = useState("signIn");
 	const [isSignedIn, setIsSignedIn] = useState(false);
 	const [user, setUser] = useState({
@@ -46,23 +46,25 @@ const App = () => {
 	};
 
 	const calculateFaceLocation = (data) => {
-		const clarifaiFace =
-			data.outputs[0].data.regions[0].region_info.bounding_box;
+		const clarifaiFaces = data.outputs[0].data.regions.map(
+			(region) => region.region_info.bounding_box
+		);
 
 		const image = document.getElementById("input-image");
 		const width = Number(image.width);
 		const height = Number(image.height);
-
-		return {
-			leftCol: clarifaiFace.left_col * width,
-			topRow: clarifaiFace.top_row * height,
-			rightCol: width - clarifaiFace.right_col * width,
-			bottomRow: height - clarifaiFace.bottom_row * height,
-		};
+		return clarifaiFaces.map((face) => {
+			return {
+				leftCol: face.left_col * width,
+				topRow: face.top_row * height,
+				rightCol: width - face.right_col * width,
+				bottomRow: height - face.bottom_row * height,
+			};
+		});
 	};
 
-	const displayFaceBox = (box) => {
-		setBox(box);
+	const displayFaceBox = (boxes) => {
+		setBoxes(boxes);
 		document.getElementById("image-link").value = "";
 		setInput("");
 	};
@@ -73,17 +75,17 @@ const App = () => {
 
 	const onButtonSubmit = () => {
 		setImageUrl(input);
-		fetch("http://localhost:3000/imageurl", {
+		fetch("https://protected-hollows-76303.herokuapp.com/imageurl", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
-				input:input,
+				input: input,
 			}),
 		})
 			.then((response) => response.json())
 			.then((response) => {
 				if (response) {
-					fetch("http://localhost:3000/image", {
+					fetch("https://protected-hollows-76303.herokuapp.com/image", {
 						method: "PUT",
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({
@@ -94,20 +96,22 @@ const App = () => {
 						.then((count) => {
 							// console.log(count);
 							setUser(Object.assign(user, { entries: count }));
-							// console.log(user);
+							console.log(user);
 						}) // working on the rank, somewhere it isnt pulling through
 						.catch(console.log);
 				}
 				displayFaceBox(calculateFaceLocation(response));
 			})
 			.catch((error) => console.log("Something went wrong", error));
+			console.log(user);
+
 	};
 
 	const onRouteChange = (route) => {
 		if (route === "signOut") {
 			setInput("");
 			setImageUrl("");
-			setBox({});
+			setBoxes([]);
 			setUser({
 				id: "",
 				name: "",
@@ -135,7 +139,7 @@ const App = () => {
 						onInputChange={onInputChange}
 						onButtonSubmit={onButtonSubmit}
 					/>
-					<FaceRecognition imageUrl={imageUrl} box={box} />
+					<FaceRecognition imageUrl={imageUrl} boxes={boxes} />
 				</div>
 			) : route === "signIn" || route === "signOut" ? (
 				<SignIn loadUser={loadUser} onRouteChange={onRouteChange} />

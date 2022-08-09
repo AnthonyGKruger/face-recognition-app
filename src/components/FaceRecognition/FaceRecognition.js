@@ -12,15 +12,31 @@ const FaceRecognition = (props) => {
 					width="500px"
 					height="auto"
 				/>
-				<div
+				{/* <div
 					className="bounding-box"
 					style={{
-						top: props.box.topRow,
-						right: props.box.rightCol,
-						bottom: props.box.bottomRow,
-						left: props.box.leftCol,
+						top: props.boxes.topRow,
+						right: props.boxes.rightCol,
+						bottom: props.boxes.bottomRow,
+						left: props.boxes.leftCol,
 					}}
-				></div>
+				></div> */}
+				{props.boxes.map((box, i) => {
+					const { topRow, rightCol, bottomRow, leftCol } = box;
+					return (
+						<div
+							className="bounding-box"
+							key={i}
+							id="face"
+							style={{
+								top: topRow,
+								right: rightCol,
+								bottom: bottomRow,
+								left: leftCol,
+							}}
+						></div>
+					);
+				})}
 			</div>
 		</div>
 	);
