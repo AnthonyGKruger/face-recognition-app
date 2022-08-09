@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Particles from "react-particles-js";
+// import Particles from "react-particles-js";
 import Navigation from "./components/Navigation/Navigation";
 import Logo from "./components/Logo/Logo";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
@@ -9,17 +9,78 @@ import "./App.css";
 import SignIn from "./components/SignIn/SignIn";
 import Register from "./components/Register/Register";
 
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+
 const particlesOptions = {
-	particles: {
-		number: {
-			value: 30,
-			density: {
+	fpsLimit: 60,
+	interactivity: {
+		events: {
+			onClick: {
 				enable: true,
-				value_area: 800,
+				mode: "push",
+			},
+			onHover: {
+				enable: true,
+				mode: "repulse",
+			},
+			resize: true,
+		},
+		modes: {
+			push: {
+				quantity: 4,
+			},
+			repulse: {
+				distance: 200,
+				duration: 0.4,
 			},
 		},
 	},
+	particles: {
+		color: {
+			value: "#ffffff",
+		},
+		links: {
+			color: "#ffffff",
+			distance: 150,
+			enable: true,
+			opacity: 0.5,
+			width: 1,
+		},
+		collisions: {
+			enable: true,
+		},
+		move: {
+			direction: "none",
+			enable: true,
+			outModes: {
+				default: "bounce",
+			},
+			random: false,
+			speed: 3,
+			straight: false,
+		},
+		number: {
+			density: {
+				enable: true,
+				area: 800,
+			},
+			value: 30,
+		},
+		opacity: {
+			value: 0.5,
+		},
+		shape: {
+			type: "circle",
+		},
+		size: {
+			value: { min: 1, max: 5 },
+		},
+	},
+	detectRetina: true,
 };
+
+
 
 const App = () => {
 	const [input, setInput] = useState("");
@@ -34,6 +95,19 @@ const App = () => {
 		entries: 0,
 		joined: "",
 	});
+
+	const particlesInit = async (main) => {
+    console.log(main);
+
+    // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
+    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+    // starting from v2 you can add only the features you need reducing the bundle size
+    await loadFull(main);
+  };
+
+	const particlesLoaded = (container) => {
+    console.log(container);
+  };
 
 	const loadUser = (data) => {
 		setUser({
@@ -129,8 +203,14 @@ const App = () => {
 
 	return (
 		<div className="App">
-			<Particles className="particles" params={particlesOptions} />
-			<Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
+			{/* <Particles className="particles" params={particlesOptions} /> */}
+			<Particles
+      id="tsparticles"
+      init={particlesInit}
+      loaded={particlesLoaded}
+      options={particlesOptions}
+    />
+			<Navigation className="particles" onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
 			{route === "home" ? (
 				<div>
 					<Logo />

@@ -1,22 +1,22 @@
 import React from "react";
-import Tilt from "react-tilt";
+// import Tilt from "react-tilt";
 import "./Logo.css";
 import companyLogo from "./logo_transparent.png";
 
 const Logo = () => {
 	console.log("test");
 	return (
-		<div className="ma4 mt0">
-			<Tilt
+		<div className="ma4 mt0 bg-white br2 shadow-3" style={{ height: 150, width: 150 }}>
+			{/* <Tilt
 				className="Tilt bg-white br2 shadow-3"
 				options={{ max: 55 }}
 				style={{ height: 150, width: 150 }}
-			>
+			> */}
 				<div className="Tilt-inner">
-					{" "}
+		
 					<img src={companyLogo} alt="logo" />{" "}
 				</div>
-			</Tilt>
+			{/* </Tilt> */}
 		</div>
 	);
 };
